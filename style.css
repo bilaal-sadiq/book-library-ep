@@ -152,6 +152,10 @@ button:active {
     align-items: center;
 }
 
+.no-cursor {
+    cursor: not-allowed;
+}
+
 
 /* 
 
@@ -293,3 +297,6 @@ EXPLORE
 
 */ 
 
+#explore {
+    background-color: rgba(115, 66, 214, 0.1);
+}
