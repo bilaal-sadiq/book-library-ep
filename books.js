@@ -3,6 +3,8 @@ function renderBooks() {
 
     const books = getBooks();
 
+// FILTER OPTIONS
+
     if (filter === 'LOW_TO_HIGH') {
      books.sort((a, b) => a.originalPrice - b.originalPrice);
     }
@@ -12,6 +14,9 @@ function renderBooks() {
     else if (filter === 'RATING') {
         books.sort((a, b) => b.rating - a.rating);
     }
+
+
+// SHOW DATA AND DISPLAY ALL BOOKS
 
     const booksHtml = books
     .map((book) => {
@@ -23,20 +28,39 @@ function renderBooks() {
         ${book.title}
     </div>
     <div class="book__ratings">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star-half-alt"></i>
+        ${ratingHTML(book.rating)}
     </div>
     <div class="book__price">
-        <span class="book__price--normal">$${book.originalPrice.toFixed(2)} </span>
+        ${priceHTML(book.originalPrice, book.salePrice)}
     </div>
 </div>`;
 })
  .join("");
 
  booksWrapper.innerHTML = booksHtml;
+}
+
+
+// SHOW THE ORIGINAL AND SALE PRICE
+
+function priceHTML(originalPrice, salePrice) {
+    if (!salePrice) {
+        return `$${originalPrice.toFixed(2)}`
+    }
+      return ` <span class="book__price--normal">$${originalPrice.toFixed(2)}</span>$${salePrice.toFixed(2)}`
+    }
+
+// SORT BOOKS BY RATING 
+
+function ratingHTML(rating) {
+    let ratingHTML = "";
+    for (let i = 0; i < Math.floor(ratings); ++i) {
+        ratingHTML += `<i class="fas fa-star"></i>\n`
+    }
+    if (!Number.isInteger(rating)) {
+        ratingHTML += `<i class="fas fa-star-half-alt"></i>\n`
+    }
+    return ratingHTML
 }
 
 function filterBooks(event) {
@@ -47,6 +71,8 @@ function filterBooks(event) {
 setTimeout(() => {
     renderBooks();
 });
+
+
 // FAKE DATA
 function getBooks() {
     return [ 
