@@ -1,19 +1,27 @@
-function renderBooks() {
-    const booksWrapper = document.querySelector('.books')
+let books; 
 
-    const books = getBooks();
+async function renderBooks(filter) {
+    const booksWrapper = document.querySelector(".books");
+    
+    booksWrapper.classList += ' books__loading'
+    
+    if (!books) {
+        books = await getBooks(); 
+    }
+    booksWrapper.classList.remove('books__loading')
 
 // FILTER OPTIONS
 
     if (filter === 'LOW_TO_HIGH') {
-     books.sort((a, b) => a.originalPrice - b.originalPrice);
+     books.sort((a, b) => (a.salesPrice || a.originalPrice) - (b.salesPrice || b.originalPrice));
     }
     else if (filter === 'HIGH_TO_LOW') {
-      books.sort((a, b) => b.originalPrice - a.originalPrice);
+      books.sort((a, b) => (b.salePrice || b.originalPrice) - (a.salePrice || a.originalPrice));
     }
     else if (filter === 'RATING') {
         books.sort((a, b) => b.rating - a.rating);
     }
+
 
 
 // SHOW DATA AND DISPLAY ALL BOOKS
@@ -45,22 +53,24 @@ function renderBooks() {
 
 function priceHTML(originalPrice, salePrice) {
     if (!salePrice) {
-        return `$${originalPrice.toFixed(2)}`
+        return `$${originalPrice.toFixed(2)}`;
     }
-      return ` <span class="book__price--normal">$${originalPrice.toFixed(2)}</span>$${salePrice.toFixed(2)}`
+      return ` <span class="book__price--normal">$${originalPrice.toFixed(
+        2
+    )}</span>$${salePrice.toFixed(2)}`;
     }
 
 // SORT BOOKS BY RATING 
 
 function ratingHTML(rating) {
     let ratingHTML = "";
-    for (let i = 0; i < Math.floor(ratings); ++i) {
-        ratingHTML += `<i class="fas fa-star"></i>\n`
+    for (let i = 0; i < Math.floor(rating); ++i) {
+        ratingHTML += `<i class="fas fa-star"></i>\n`;
     }
     if (!Number.isInteger(rating)) {
-        ratingHTML += `<i class="fas fa-star-half-alt"></i>\n`
+        ratingHTML += `<i class="fas fa-star-half-alt"></i>\n`;
     }
-    return ratingHTML
+    return ratingHTML;
 }
 
 function filterBooks(event) {
@@ -75,9 +85,10 @@ setTimeout(() => {
 
 // FAKE DATA
 function getBooks() {
-    return [ 
-         
-    {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([
+          {
             id: 1,
             title: "Crack the Coding Interview",
             url: "assets/crack the coding interview.png",
@@ -147,7 +158,7 @@ function getBooks() {
             url: "assets/book-6.jpeg",
             originalPrice: 35,
             salePrice: null,
-            rating: 2,
+            rating: 3,
           },
           {
             id: 10,
@@ -165,7 +176,9 @@ function getBooks() {
             salePrice: null,
             rating: 4.5,
           },
-
-        ];
-        
-}
+        ]);
+      }, 1000);
+    });
+  }
+         
+   
