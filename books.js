@@ -24,7 +24,7 @@ async function renderBooks(filter) {
 
 
 
-// SHOW DATA AND DISPLAY ALL BOOKS
+// SHOW DATA AND DISPLAY ALL BOOKS 
 
     const booksHtml = books
     .map((book) => {
